@@ -33,6 +33,19 @@ to its parent by a fixed joint, so no reference axis is needed. Empty links may
 have children. An empty base link may also use the automatically generated global
 coordinate system.
 
+### Overridden mass properties
+
+With SolidWorks 2020 or later, assembly links use component-level mass properties,
+including values assigned through **Override Mass Properties**, in SI units.
+This also preserves component placement when a link contains a subassembly.
+Older SolidWorks versions, or documents for which `CreateMassProperty2` is
+unavailable, use the previous body-based calculation and log a warning. That
+fallback does not support overridden mass properties and retains the previous
+subassembly limitations. The separate part exporter is unchanged.
+
+Building this version requires the .NET Framework 4.5.2 targeting pack and
+SolidWorks 2020 or newer interop assemblies.
+
 ## Development
 
 1. Install Visual Studio 2017
