@@ -69,6 +69,9 @@
             this.textBoxMass = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxRobotFormat = new System.Windows.Forms.GroupBox();
+            this.radioButtonUrdf = new System.Windows.Forms.RadioButton();
+            this.radioButtonXacro = new System.Windows.Forms.RadioButton();
             this.radioButton3dxml = new System.Windows.Forms.RadioButton();
             this.radioButtonStl = new System.Windows.Forms.RadioButton();
             this.radioButtonFine = new System.Windows.Forms.RadioButton();
@@ -187,6 +190,7 @@
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBoxRobotFormat.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLinkProperties
@@ -550,6 +554,7 @@
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this.groupBox1);
+            this.groupBox4.Controls.Add(this.groupBoxRobotFormat);
             this.groupBox4.Controls.Add(this.radioButtonFine);
             this.groupBox4.Controls.Add(this.radioButtonCourse);
             this.groupBox4.Controls.Add(this.label10);
@@ -597,6 +602,40 @@
             this.groupBox1.TabIndex = 74;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mesh Format";
+            //
+            // groupBoxRobotFormat
+            //
+            this.groupBoxRobotFormat.Controls.Add(this.radioButtonUrdf);
+            this.groupBoxRobotFormat.Controls.Add(this.radioButtonXacro);
+            this.groupBoxRobotFormat.Location = new System.Drawing.Point(320, 147);
+            this.groupBoxRobotFormat.Name = "groupBoxRobotFormat";
+            this.groupBoxRobotFormat.Size = new System.Drawing.Size(122, 90);
+            this.groupBoxRobotFormat.TabIndex = 75;
+            this.groupBoxRobotFormat.TabStop = false;
+            this.groupBoxRobotFormat.Text = "Robot Format";
+            //
+            // radioButtonUrdf
+            //
+            this.radioButtonUrdf.AutoSize = true;
+            this.radioButtonUrdf.Checked = true;
+            this.radioButtonUrdf.Location = new System.Drawing.Point(11, 24);
+            this.radioButtonUrdf.Name = "radioButtonUrdf";
+            this.radioButtonUrdf.Size = new System.Drawing.Size(55, 17);
+            this.radioButtonUrdf.TabIndex = 0;
+            this.radioButtonUrdf.TabStop = true;
+            this.radioButtonUrdf.Text = "URDF";
+            this.radioButtonUrdf.UseVisualStyleBackColor = true;
+            //
+            // radioButtonXacro
+            //
+            this.radioButtonXacro.AutoSize = true;
+            this.radioButtonXacro.Location = new System.Drawing.Point(11, 54);
+            this.radioButtonXacro.Name = "radioButtonXacro";
+            this.radioButtonXacro.Size = new System.Drawing.Size(53, 17);
+            this.radioButtonXacro.TabIndex = 1;
+            this.radioButtonXacro.Text = "Xacro";
+            this.radioButtonXacro.UseVisualStyleBackColor = true;
+            this.radioButtonXacro.CheckedChanged += new System.EventHandler(this.RobotFormatChanged);
             // 
             // radioButton3dxml
             // 
@@ -1714,6 +1753,8 @@
             this.groupBox4.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBoxRobotFormat.ResumeLayout(false);
+            this.groupBoxRobotFormat.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1874,6 +1915,9 @@
         private System.Windows.Forms.Label MimicEquationLabel;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioButton3dxml;
+        private System.Windows.Forms.GroupBox groupBoxRobotFormat;
+        private System.Windows.Forms.RadioButton radioButtonUrdf;
+        private System.Windows.Forms.RadioButton radioButtonXacro;
         private System.Windows.Forms.RadioButton radioButtonStl;
     }
 }
