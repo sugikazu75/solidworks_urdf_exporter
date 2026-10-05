@@ -142,7 +142,8 @@ namespace SW2URDF.URDFExport
         #region Export Methods
 
         // Beginning method for exporting the full package
-        public void ExportRobot(bool exportSTL = true, MeshExportFormat meshFormat = MeshExportFormat.STL)
+        public void ExportRobot(bool exportSTL = true, MeshExportFormat meshFormat = MeshExportFormat.STL,
+            bool useXacro = false)
         {
             //Setting up the progress bar
             logger.Info("Beginning the export process");
@@ -155,7 +156,8 @@ namespace SW2URDF.URDFExport
             URDFPackage package = new URDFPackage(PackageName, SavePath);
             package.CreateDirectories();
             URDFRobot.Name = PackageName;
-            string windowsURDFFileName = package.WindowsRobotsDirectory + URDFRobot.Name + ".urdf";
+            string robotFileName = URDFRobot.Name + (useXacro ? ".xacro" : ".urdf");
+            string windowsURDFFileName = package.WindowsRobotsDirectory + robotFileName;
             string windowsCSVFileName = package.WindowsRobotsDirectory + URDFRobot.Name + ".csv";
             string windowsPackageXMLFileName = package.WindowsPackageDirectory + "package.xml";
 
@@ -170,16 +172,16 @@ namespace SW2URDF.URDFExport
             //Creating package.xml file
             logger.Info("Creating package.xml at " + windowsPackageXMLFileName);
             PackageXMLWriter packageXMLWriter = new PackageXMLWriter(windowsPackageXMLFileName);
-            PackageXML packageXML = new PackageXML(PackageName);
+            PackageXML packageXML = new PackageXML(PackageName, useXacro);
             packageXML.WriteElement(packageXMLWriter);
 
             //Creating RVIZ launch file
-            Rviz rviz = new Rviz(PackageName, URDFRobot.Name + ".urdf");
+            Rviz rviz = new Rviz(PackageName, robotFileName, useXacro);
             logger.Info("Creating RVIZ launch file in " + package.WindowsLaunchDirectory);
             rviz.WriteFiles(package.WindowsLaunchDirectory);
 
             //Creating Gazebo launch file
-            Gazebo gazebo = new Gazebo(URDFRobot.Name, PackageName, URDFRobot.Name + ".urdf");
+            Gazebo gazebo = new Gazebo(URDFRobot.Name, PackageName, robotFileName, useXacro);
             logger.Info("Creating Gazebo launch file in " + package.WindowsLaunchDirectory);
 
             gazebo.WriteFile(package.WindowsLaunchDirectory);
@@ -228,7 +230,7 @@ namespace SW2URDF.URDFExport
 
             logger.Info("Writing URDF file to " + windowsURDFFileName);
             URDFWriter uWriter = new URDFWriter(windowsURDFFileName);
-            URDFRobot.WriteURDF(uWriter.writer);
+            URDFRobot.WriteURDF(uWriter.writer, useXacro);
 
             ImportExport.WriteRobotToCSV(URDFRobot, windowsCSVFileName);
 

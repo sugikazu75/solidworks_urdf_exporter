@@ -35,9 +35,11 @@ namespace SW2URDF.URDF
         public Dependencies dependencies;
         public Author author;
         public License license;
+        private readonly bool useXacro;
 
-        public PackageXML(string name)
+        public PackageXML(string name, bool useXacro = false)
         {
+            this.useXacro = useXacro;
             description = new Description(name);
 
             dependencies = new Dependencies(
@@ -62,6 +64,10 @@ namespace SW2URDF.URDF
             author.WriteElement(writer);
             license.WriteElement(writer);
             dependencies.WriteElement(writer);
+            if (useXacro)
+            {
+                writer.WriteElementString("exec_depend", "xacro");
+            }
 
             writer.WriteStartElement("export");
 

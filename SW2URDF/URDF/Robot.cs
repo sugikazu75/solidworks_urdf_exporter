@@ -30,6 +30,11 @@ namespace SW2URDF.URDF
 
         public override void WriteURDF(XmlWriter writer)
         {
+            WriteURDF(writer, false);
+        }
+
+        public void WriteURDF(XmlWriter writer, bool useXacro)
+        {
             writer.WriteStartDocument();
             string buildVersion = Versioning.Version.GetBuildVersion();
             string commitVersion = Versioning.Version.GetCommitVersion();
@@ -39,7 +44,28 @@ namespace SW2URDF.URDF
                 string.Format("     Commit Version: {0}  Build Version: {1}\r\n", commitVersion, buildVersion) +
                 "     For more information, please see http://wiki.ros.org/sw_urdf_exporter ");
 
-            base.WriteURDF(writer);
+            if (useXacro)
+            {
+                if (!AreRequiredFieldsSatisfied())
+                {
+                    throw new System.InvalidOperationException("The required fields of the robot have not been satisfied");
+                }
+                writer.WriteStartElement("robot");
+                writer.WriteAttributeString("xmlns", "xacro", null, "http://www.ros.org/wiki/xacro");
+                foreach (URDFAttribute attribute in Attributes)
+                {
+                    if (attribute.Value != null) attribute.WriteURDF(writer);
+                }
+                foreach (URDFElement child in ChildElements)
+                {
+                    if (child.ElementContainsData()) child.WriteURDF(writer);
+                }
+                writer.WriteEndElement();
+            }
+            else
+            {
+                base.WriteURDF(writer);
+            }
             writer.WriteEndDocument();
             writer.Close();
         }

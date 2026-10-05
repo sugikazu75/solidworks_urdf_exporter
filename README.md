@@ -46,6 +46,15 @@ subassembly limitations. The separate part exporter is unchanged.
 Building this version requires the .NET Framework 4.5.2 targeting pack and
 SolidWorks 2020 or newer interop assemblies.
 
+The assembly export screen has separate **Mesh Format** (STL / 3dxml) and
+**Robot Format** (URDF / Xacro) choices. URDF remains the default. Selecting
+Xacro writes `urdf/<package-name>.xacro` with
+`xmlns:xacro="http://www.ros.org/wiki/xacro"` on the `robot` element. It preserves
+the existing link and joint definitions; it does not generate macros or parameters.
+The generated ROS launch files process the file with Xacro before loading it,
+and `package.xml` includes the `xacro` runtime dependency. Both export buttons
+(with and without meshes) use the selected robot format.
+
 ## Development
 
 1. Install Visual Studio 2017

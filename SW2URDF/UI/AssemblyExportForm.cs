@@ -321,10 +321,17 @@ namespace SW2URDF.UI
                 {
                     meshFormat = MeshExportFormat.STL;
                 }
-                Exporter.ExportRobot(exportSTL, meshFormat);
+                Exporter.ExportRobot(exportSTL, meshFormat, radioButtonXacro.Checked);
 
                 Close();
             }
+        }
+
+        private void RobotFormatChanged(object sender, EventArgs e)
+        {
+            string format = radioButtonXacro.Checked ? "Xacro" : "URDF";
+            buttonLinksExportUrdfOnly.Text = "Export " + format + " Only...";
+            buttonLinksFinish.Text = "Export " + format + " and Meshes...";
         }
 
         private string CheckLinksForErrors(Link baseLink)
