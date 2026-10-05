@@ -24,6 +24,15 @@ https://github.com/ros/solidworks_urdf_exporter/releases/tag/1.5.1
 
 See the [ROS Wiki](http://wiki.ros.org/sw_urdf_exporter) and associated [tutorials](http://wiki.ros.org/sw_urdf_exporter/Tutorials).
 
+The assembly export screen has separate **Mesh Format** (STL / 3dxml) and
+**Robot Format** (URDF / Xacro) choices. URDF remains the default. Selecting
+Xacro writes `urdf/<package-name>.xacro` with
+`xmlns:xacro="http://www.ros.org/wiki/xacro"` on the `robot` element. It preserves
+the existing link and joint definitions; it does not generate macros or parameters.
+The generated ROS launch files process the file with Xacro before loading it,
+and `package.xml` includes the `xacro` runtime dependency. Both export buttons
+(with and without meshes) use the selected robot format.
+
 ## Development
 
 1. Install Visual Studio 2017

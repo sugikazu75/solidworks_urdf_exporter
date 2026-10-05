@@ -74,12 +74,14 @@ namespace SW2URDF.ROS
         private readonly string paramName;
         private readonly string paramValue;
         private readonly string paramTextFile;
+        private readonly string paramCommand;
 
-        public LaunchParam(string name, string value = "", string textfile = "")
+        public LaunchParam(string name, string value = "", string textfile = "", string command = "")
         {
             paramName = name;
             paramValue = value;
             paramTextFile = textfile;
+            paramCommand = command;
         }
 
         public override void WriteFile(XmlWriter writer)
@@ -96,7 +98,19 @@ namespace SW2URDF.ROS
             {
                 writer.WriteAttributeString("textfile", paramTextFile);
             }
+            if (paramCommand.Length > 0)
+            {
+                writer.WriteAttributeString("command", paramCommand);
+            }
             writer.WriteEndElement();
+        }
+
+        public static LaunchParam RobotDescription(string packageName, string fileName, bool useXacro)
+        {
+            string path = "$(find " + packageName + ")/urdf/" + fileName;
+            return useXacro
+                ? new LaunchParam("robot_description", command: "$(find xacro)/xacro '" + path + "'")
+                : new LaunchParam("robot_description", textfile: path);
         }
     }
 
@@ -170,7 +184,7 @@ namespace SW2URDF.ROS
         private readonly string model;
         private readonly List<LaunchElement> elements;
 
-        public Gazebo(string modelName, string packageName, string URDFName)
+        public Gazebo(string modelName, string packageName, string URDFName, bool useXacro = false)
         {
             elements = new List<LaunchElement>();
             model = modelName;
@@ -180,9 +194,13 @@ namespace SW2URDF.ROS
             elements.Add(new LaunchInclude("$(find gazebo_ros)/launch/empty_world.launch"));
             elements.Add(new LaunchNode(
                 "tf_footprint_base", "tf", "static_transform_publisher", "0 0 0 0 0 0 base_link base_footprint 40"));
+            if (useXacro)
+            {
+                elements.Add(LaunchParam.RobotDescription(package, robotURDF, true));
+            }
+            string source = useXacro ? "-param robot_description" : "-file $(find " + package + ")/urdf/" + robotURDF;
             elements.Add(new LaunchNode(
-                "spawn_model", "gazebo_ros", "spawn_model", "-file $(find " + package +
-                ")/urdf/" + robotURDF + " -urdf -model " + model, "screen"));
+                "spawn_model", "gazebo_ros", "spawn_model", source + " -urdf -model " + model, "screen"));
             elements.Add(new LaunchNode(
                 "fake_joint_calibration", "rostopic", "rostopic",
                 "pub /calibrated std_msgs/Bool true"));
@@ -222,7 +240,7 @@ namespace SW2URDF.ROS
         private readonly string robotURDF;
         private readonly List<LaunchElement> elements;
 
-        public Rviz(string packageName, string URDFName)
+        public Rviz(string packageName, string URDFName, bool useXacro = false)
         {
             package = packageName;
             robotURDF = URDFName;
@@ -230,7 +248,7 @@ namespace SW2URDF.ROS
             elements = new List<LaunchElement>
             {
                 new LaunchArg("model"),
-                new LaunchParam("robot_description", "", "$(find " + package + ")/urdf/" + robotURDF),
+                LaunchParam.RobotDescription(package, robotURDF, useXacro),
                 new LaunchNode("joint_state_publisher_gui", "joint_state_publisher_gui", "joint_state_publisher_gui"),
                 new LaunchNode("robot_state_publisher", "robot_state_publisher", "robot_state_publisher"),
                 new LaunchNode("rviz", "rviz", "rviz", "-d $(find " + package + ")/urdf.rviz")
