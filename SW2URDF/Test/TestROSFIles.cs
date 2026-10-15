@@ -171,6 +171,9 @@ namespace SW2URDF.Test
                 var stl = (System.Windows.Forms.RadioButton)form.Controls.Find("radioButtonStl", true)[0];
                 var color = (System.Windows.Forms.RadioButton)form.Controls.Find("radioButton3dxml", true)[0];
                 Assert.True(urdf.Checked);
+                var meshDirectory = (System.Windows.Forms.TextBox)form.Controls.Find("textBoxMeshDirectory", true)[0];
+                Assert.Equal("meshes", meshDirectory.Text);
+                meshDirectory.Text = @"assets\meshes";
                 Assert.True(stl.Checked);
                 xacro.Checked = true;
                 Assert.False(urdf.Checked);
@@ -183,6 +186,7 @@ namespace SW2URDF.Test
                 Assert.True(color.Checked);
                 Assert.False(xacro.Checked);
                 Assert.Equal("Export URDF and Meshes...", form.Controls.Find("buttonLinksFinish", true)[0].Text);
+                Assert.Equal(@"assets\meshes", meshDirectory.Text);
             }
         }
     }
