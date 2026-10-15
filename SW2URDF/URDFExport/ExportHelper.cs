@@ -231,6 +231,7 @@ namespace SW2URDF.URDFExport
             logger.Info("Writing URDF file to " + windowsURDFFileName);
             URDFWriter uWriter = new URDFWriter(windowsURDFFileName);
             URDFRobot.WriteURDF(uWriter.writer, useXacro);
+            URDFWriter.FormatFile(windowsURDFFileName);
 
             ImportExport.WriteRobotToCSV(URDFRobot, windowsCSVFileName);
 
@@ -518,6 +519,7 @@ namespace SW2URDF.URDFExport
             URDFWriter uWriter = new URDFWriter(windowsURDFFileName);
             //mRobot.addLink(mLink);
             URDFRobot.WriteURDF(uWriter.writer);
+            URDFWriter.FormatFile(windowsURDFFileName);
 
             ResetUserPreferences();
         }
