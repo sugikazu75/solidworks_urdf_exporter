@@ -82,6 +82,8 @@ namespace SW2URDF.URDFExport
         public string SavePath
         { get; set; }
 
+        public string MeshDirectory { get; set; } = "meshes";
+
         public readonly List<Link> Links;
 
         private readonly List<string> ReferenceCoordinateSystemNames;
@@ -153,7 +155,7 @@ namespace SW2URDF.URDFExport
 
             //Creating package directories
             logger.Info("Creating package directories with name " + PackageName + " and save path " + SavePath);
-            URDFPackage package = new URDFPackage(PackageName, SavePath);
+            URDFPackage package = new URDFPackage(PackageName, SavePath, MeshDirectory);
             package.CreateDirectories();
             URDFRobot.Name = PackageName;
             string robotFileName = URDFRobot.Name + (useXacro ? ".xacro" : ".urdf");
@@ -480,7 +482,7 @@ namespace SW2URDF.URDFExport
             LocalizeLink(URDFRobot.BaseLink, GlobalTransform);
 
             //Creating package directories
-            URDFPackage package = new URDFPackage(PackageName, SavePath);
+            URDFPackage package = new URDFPackage(PackageName, SavePath, MeshDirectory);
             package.CreateDirectories();
             string meshFileName = package.MeshesDirectory + URDFRobot.BaseLink.Name + ".STL";
             string windowsMeshFileName = package.WindowsMeshesDirectory + URDFRobot.BaseLink.Name + ".STL";

@@ -105,6 +105,8 @@
             this.textBoxVisualOriginY = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.textBoxTexture = new System.Windows.Forms.TextBox();
+            this.textBoxMeshDirectory = new System.Windows.Forms.TextBox();
+            this.labelMeshDirectory = new System.Windows.Forms.Label();
             this.treeViewLinkProperties = new System.Windows.Forms.TreeView();
             this.buttonJointNext = new System.Windows.Forms.Button();
             this.buttonJointCancel = new System.Windows.Forms.Button();
@@ -586,6 +588,8 @@
             this.groupBox4.Controls.Add(this.textBoxVisualOriginY);
             this.groupBox4.Controls.Add(this.label30);
             this.groupBox4.Controls.Add(this.textBoxTexture);
+            this.groupBox4.Controls.Add(this.textBoxMeshDirectory);
+            this.groupBox4.Controls.Add(this.labelMeshDirectory);
             this.groupBox4.Location = new System.Drawing.Point(494, 278);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(568, 305);
@@ -598,7 +602,7 @@
             this.groupBox1.Controls.Add(this.radioButtonStl);
             this.groupBox1.Location = new System.Drawing.Point(184, 147);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(122, 90);
+            this.groupBox1.Size = new System.Drawing.Size(122, 75);
             this.groupBox1.TabIndex = 74;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mesh Format";
@@ -609,7 +613,7 @@
             this.groupBoxRobotFormat.Controls.Add(this.radioButtonXacro);
             this.groupBoxRobotFormat.Location = new System.Drawing.Point(320, 147);
             this.groupBoxRobotFormat.Name = "groupBoxRobotFormat";
-            this.groupBoxRobotFormat.Size = new System.Drawing.Size(122, 90);
+            this.groupBoxRobotFormat.Size = new System.Drawing.Size(122, 75);
             this.groupBoxRobotFormat.TabIndex = 75;
             this.groupBoxRobotFormat.TabStop = false;
             this.groupBoxRobotFormat.Text = "Robot Format";
@@ -919,6 +923,16 @@
             this.label30.TabIndex = 53;
             this.label30.Text = "Red";
             // 
+            // Mesh folder applies to the entire package, independently of the selected link.
+            this.labelMeshDirectory.AutoSize = true;
+            this.labelMeshDirectory.Location = new System.Drawing.Point(184, 228);
+            this.labelMeshDirectory.Name = "labelMeshDirectory";
+            this.labelMeshDirectory.Text = "Mesh folder (relative to package root)";
+            this.textBoxMeshDirectory.Location = new System.Drawing.Point(184, 246);
+            this.textBoxMeshDirectory.Name = "textBoxMeshDirectory";
+            this.textBoxMeshDirectory.Size = new System.Drawing.Size(370, 19);
+            this.textBoxMeshDirectory.TabIndex = 76;
+            this.textBoxMeshDirectory.Text = "meshes";
             // textBoxTexture
             // 
             this.textBoxTexture.Location = new System.Drawing.Point(16, 278);
@@ -1812,6 +1826,8 @@
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.TextBox textBoxVisualOriginRoll;
         private System.Windows.Forms.TextBox textBoxTexture;
+        private System.Windows.Forms.TextBox textBoxMeshDirectory;
+        private System.Windows.Forms.Label labelMeshDirectory;
         private System.Windows.Forms.ComboBox comboBoxMaterials;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label20;

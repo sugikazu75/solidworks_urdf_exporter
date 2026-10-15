@@ -47,11 +47,37 @@ namespace SW2URDF.URDFExport
         public string WindowsCMakeLists { get; }
         public string WindowsConfigYAML { get; }
 
-        public URDFPackage(string name, string dir)
+        public string MeshDirectory { get; }
+
+        public static string NormalizeMeshDirectory(string directory)
         {
+            if (string.IsNullOrWhiteSpace(directory))
+                throw new ArgumentException("Enter a mesh folder relative to the package root.");
+
+            string normalized = directory.Replace('\\', '/').Replace('\u00a5', '/').Replace('\uffe5', '/');
+            if (normalized.StartsWith("/"))
+                throw new ArgumentException("The mesh folder must be relative to the package root.");
+
+            normalized = normalized.TrimEnd('/');
+            foreach (string segment in normalized.Split('/'))
+            {
+                string device = segment.Split('.')[0].ToUpperInvariant();
+                if (segment.Length == 0 || segment == "." || segment == ".." ||
+                    segment.EndsWith(".") || segment.EndsWith(" ") ||
+                    segment.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 ||
+                    device == "CON" || device == "PRN" || device == "AUX" || device == "NUL" ||
+                    System.Text.RegularExpressions.Regex.IsMatch(device, @"^(COM|LPT)[1-9]$"))
+                    throw new ArgumentException("Use valid folder names without absolute paths, '.' or '..'.");
+            }
+            return normalized;
+        }
+
+        public URDFPackage(string name, string dir, string meshDirectory = "meshes")
+        {
+            MeshDirectory = NormalizeMeshDirectory(meshDirectory);
             PackageName = name;
             PackageDirectory = @"package://" + name + @"/";
-            MeshesDirectory = PackageDirectory + @"meshes/";
+            MeshesDirectory = PackageDirectory + string.Join("/", Array.ConvertAll(MeshDirectory.Split('/'), Uri.EscapeDataString)) + "/";
             RobotsDirectory = PackageDirectory + @"urdf/";
             TexturesDirectory = PackageDirectory + @"textures/";
             LaunchDirectory = PackageDirectory + @"launch/";
@@ -60,7 +86,7 @@ namespace SW2URDF.URDFExport
             char last = dir[dir.Length - 1];
             dir = (last == '\\') ? dir : dir + @"\";
             WindowsPackageDirectory = dir + name + @"\";
-            WindowsMeshesDirectory = WindowsPackageDirectory + @"meshes\";
+            WindowsMeshesDirectory = WindowsPackageDirectory + MeshDirectory.Replace('/', '\\') + @"\";
             WindowsRobotsDirectory = WindowsPackageDirectory + @"urdf\";
             WindowsTexturesDirectory = WindowsPackageDirectory + @"textures\";
             WindowsLaunchDirectory = WindowsPackageDirectory + @"launch\";
@@ -108,10 +134,13 @@ namespace SW2URDF.URDFExport
                 file.WriteLine("find_package(catkin REQUIRED)\r\n");
                 file.WriteLine("catkin_package()\r\n");
                 file.WriteLine("find_package(roslaunch)\r\n");
-                file.WriteLine("foreach(dir config launch meshes urdf)");
+                file.WriteLine("foreach(dir config launch urdf)");
                 file.WriteLine("\tinstall(DIRECTORY ${dir}/");
                 file.WriteLine("\t\tDESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})");
                 file.WriteLine("endforeach(dir)");
+                string meshDirectory = MeshDirectory.Replace("$", "\\$");
+                file.WriteLine("install(DIRECTORY \"" + meshDirectory + "/\"");
+                file.WriteLine("\tDESTINATION \"${CATKIN_PACKAGE_SHARE_DESTINATION}/" + meshDirectory + "\")");
             }
         }
 

@@ -61,6 +61,7 @@ namespace SW2URDF.UI
             BaseNode = node;
             ActiveSWModel = swApp.ActiveDoc;
             Exporter = exporter;
+            textBoxMeshDirectory.Text = exporter?.MeshDirectory ?? "meshes";
             AutoUpdatingForm = false;
 
             jointBoxes = new Control[] {
@@ -290,6 +291,18 @@ namespace SW2URDF.UI
                     logger.Info("Export canceled for user to review warnings");
                     return;
                 }
+            }
+
+            try
+            {
+                Exporter.MeshDirectory = URDFPackage.NormalizeMeshDirectory(textBoxMeshDirectory.Text);
+            }
+            catch (ArgumentException exception)
+            {
+                MessageBox.Show(exception.Message, "Invalid mesh folder");
+                textBoxMeshDirectory.Focus();
+                textBoxMeshDirectory.SelectAll();
+                return;
             }
 
             SaveFileDialog saveFileDialog1 = new SaveFileDialog
