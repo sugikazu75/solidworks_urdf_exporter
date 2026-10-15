@@ -30,6 +30,69 @@ namespace SW2URDF.Test
             return text.ToString();
         }
 
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void FormattingCompactsAttributesWithoutChangingRobotData(bool useXacro)
+        {
+            string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") +
+                (useXacro ? ".xacro" : ".urdf"));
+            try
+            {
+                var robot = new Robot { Name = "test_robot" };
+                robot.BaseLink.Name = "base_link";
+                robot.BaseLink.Inertial.Mass.Value = 1.64830643298615;
+                var output = new URDF.URDFWriter(path);
+                robot.WriteURDF(output.writer, useXacro);
+                string original = File.ReadAllText(path);
+                URDF.URDFWriter.FormatFile(path);
+                string formatted = File.ReadAllText(path);
+                Assert.Contains("\n  <link name=\"base_link\">", formatted);
+                Assert.Contains("<origin xyz=\"0 0 0\" rpy=\"0 0 0\" />", formatted);
+                Assert.DoesNotContain("\r", formatted);
+                Assert.True(formatted.Split('\n').Length < original.Split('\n').Length);
+                Assert.Equal(ReadXml(original).OuterXml, ReadXml(formatted).OuterXml);
+                Assert.Equal("utf-8", ((XmlDeclaration)ReadXml(formatted).FirstChild).Encoding);
+                Assert.Equal((byte)'<', File.ReadAllBytes(path)[0]);
+                URDF.URDFWriter.FormatFile(path);
+                Assert.Equal(formatted, File.ReadAllText(path));
+            }
+            finally { File.Delete(path); }
+        }
+
+        [Fact]
+        public void FormattingPreservesTextNamespacesAndEscapedAttributeValues()
+        {
+            string path = Path.GetTempFileName();
+            try
+            {
+                string original = "<robot xmlns:xacro=\"http://www.ros.org/wiki/xacro\" name=\"test\">\n" +
+                    "<!-- keep this comment -->\n<xacro:property name=\"label\" value=\"a &amp; b&#xA;c&#x9;d&#xD;e\" />\n" +
+                    "<text xml:space=\"preserve\">  keep\n  spaces  </text>\n" +
+                    "<text>before <b /> after</text>\n</robot>";
+                File.WriteAllText(path, original, new UTF8Encoding(false));
+                URDF.URDFWriter.FormatFile(path);
+                string formatted = File.ReadAllText(path);
+                Assert.Equal(ReadXml(original).OuterXml, ReadXml(formatted).OuterXml);
+                Assert.DoesNotContain("<?xml", formatted);
+            }
+            finally { File.Delete(path); }
+        }
+
+        [Fact]
+        public void FormattingInvalidXmlLeavesOriginalFileIntact()
+        {
+            string path = Path.GetTempFileName();
+            try
+            {
+                const string original = "<robot><link></robot>";
+                File.WriteAllText(path, original);
+                Assert.Throws<XmlException>(() => URDF.URDFWriter.FormatFile(path));
+                Assert.Equal(original, File.ReadAllText(path));
+            }
+            finally { File.Delete(path); }
+        }
+
         [Fact]
         public void XacroAddsOnlyNamespaceAndDoesNotChangeLaterUrdfExports()
         {
