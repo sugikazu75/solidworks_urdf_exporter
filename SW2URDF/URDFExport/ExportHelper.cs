@@ -289,7 +289,7 @@ namespace SW2URDF.URDFExport
             }
 
             // Copy the texture file (if it was specified) to the textures directory
-            if (!link.isFixedFrame && !String.IsNullOrWhiteSpace(link.Visual.Material.Texture.wFilename))
+            if (meshFormat != MeshExportFormat.DAE && !link.isFixedFrame && !String.IsNullOrWhiteSpace(link.Visual.Material.Texture.wFilename))
             {
                 if (File.Exists(link.Visual.Material.Texture.wFilename))
                 {
@@ -318,6 +318,11 @@ namespace SW2URDF.URDFExport
                     windowsMeshFileName += ".3dxml";
                     break;
 
+                case MeshExportFormat.DAE:
+                    meshFilename += ".dae";
+                    windowsMeshFileName += ".dae";
+                    break;
+
                 default:
                     meshFilename += ".STL";
                     windowsMeshFileName += ".STL";
@@ -334,6 +339,10 @@ namespace SW2URDF.URDFExport
 
                     case MeshExportFormat.THREEDXML:
                         Save3dxml(link, windowsMeshFileName);
+                        break;
+
+                    case MeshExportFormat.DAE:
+                        SaveDae(link, windowsMeshFileName);
                         break;
 
                     default:

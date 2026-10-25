@@ -1562,6 +1562,7 @@ namespace SW2URDF.URDFExport
     public enum MeshExportFormat
     {
         STL,
-        THREEDXML
+        THREEDXML,
+        DAE
     }
 }

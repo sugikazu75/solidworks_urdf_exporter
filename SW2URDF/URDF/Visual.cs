@@ -25,5 +25,20 @@ namespace SW2URDF.URDF
             ChildElements.Add(Geometry);
             ChildElements.Add(Material);
         }
+
+        public override void WriteURDF(System.Xml.XmlWriter writer)
+        {
+            if (!(Geometry.Mesh.Filename ?? "").EndsWith(".dae", System.StringComparison.OrdinalIgnoreCase))
+            {
+                base.WriteURDF(writer);
+                return;
+            }
+            // Let consumers use the per-face colors embedded in COLLADA instead of
+            // overriding every mesh material with the link's single URDF color.
+            writer.WriteStartElement("visual");
+            Origin.WriteURDF(writer);
+            Geometry.WriteURDF(writer);
+            writer.WriteEndElement();
+        }
     }
 }

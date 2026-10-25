@@ -326,6 +326,8 @@
     <Compile Include="Test\TestCommon.cs" />
     <Compile Include="Test\TestCSVImportExport.cs" />
     <Compile Include="Test\TestExportHelper.cs" />
+    <Compile Include="URDFExport\ColladaMesh.cs" />
+    <Compile Include="URDFExport\ExportHelperCollada.cs" />
     <Compile Include="Test\TestLogger.cs" />
     <Compile Include="Test\TestMathOps.cs" />
     <Compile Include="Test\TestPropertyManager.cs" />
