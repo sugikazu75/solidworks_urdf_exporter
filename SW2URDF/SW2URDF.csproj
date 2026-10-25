@@ -237,6 +237,10 @@
     <Reference Include="log4net">
       <HintPath>lib\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="geometry3Sharp">
+      <HintPath>..\packages\geometry3Sharp-signed.1.0.323\lib\net45\geometry3Sharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MathNet.Numerics, Version=4.7.0.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.Signed.4.7.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
@@ -328,6 +332,11 @@
     <Compile Include="Test\TestExportHelper.cs" />
     <Compile Include="Test\TestCollada.cs" />
     <Compile Include="URDFExport\ColladaMesh.cs" />
+    <Content Include="ThirdParty\geometry3Sharp-LICENSE.txt">
+      <Link>geometry3Sharp-LICENSE.txt</Link>
+      <TargetPath>geometry3Sharp-LICENSE.txt</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="URDFExport\ExportHelperCollada.cs" />
     <Compile Include="Test\TestLogger.cs" />
     <Compile Include="Test\TestMathOps.cs" />
