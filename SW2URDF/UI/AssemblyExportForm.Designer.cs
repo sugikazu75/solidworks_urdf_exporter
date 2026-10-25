@@ -74,6 +74,7 @@
             this.radioButtonXacro = new System.Windows.Forms.RadioButton();
             this.radioButton3dxml = new System.Windows.Forms.RadioButton();
             this.radioButtonStl = new System.Windows.Forms.RadioButton();
+            this.radioButtonDae = new System.Windows.Forms.RadioButton();
             this.radioButtonFine = new System.Windows.Forms.RadioButton();
             this.radioButtonCourse = new System.Windows.Forms.RadioButton();
             this.label10 = new System.Windows.Forms.Label();
@@ -600,6 +601,7 @@
             // 
             this.groupBox1.Controls.Add(this.radioButton3dxml);
             this.groupBox1.Controls.Add(this.radioButtonStl);
+            this.groupBox1.Controls.Add(this.radioButtonDae);
             this.groupBox1.Location = new System.Drawing.Point(184, 147);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(122, 75);
@@ -644,7 +646,7 @@
             // radioButton3dxml
             // 
             this.radioButton3dxml.AutoSize = true;
-            this.radioButton3dxml.Location = new System.Drawing.Point(11, 54);
+            this.radioButton3dxml.Location = new System.Drawing.Point(11, 36);
             this.radioButton3dxml.Name = "radioButton3dxml";
             this.radioButton3dxml.Size = new System.Drawing.Size(90, 16);
             this.radioButton3dxml.TabIndex = 1;
@@ -656,13 +658,22 @@
             // 
             this.radioButtonStl.AutoSize = true;
             this.radioButtonStl.Checked = true;
-            this.radioButtonStl.Location = new System.Drawing.Point(11, 24);
+            this.radioButtonStl.Location = new System.Drawing.Point(11, 18);
             this.radioButtonStl.Name = "radioButtonStl";
             this.radioButtonStl.Size = new System.Drawing.Size(104, 16);
             this.radioButtonStl.TabIndex = 0;
             this.radioButtonStl.TabStop = true;
             this.radioButtonStl.Text = "STL (grayscale)";
             this.radioButtonStl.UseVisualStyleBackColor = true;
+            // radioButtonDae
+            this.radioButtonDae.AutoSize = true;
+            this.radioButtonDae.Location = new System.Drawing.Point(11, 54);
+            this.radioButtonDae.Name = "radioButtonDae";
+            this.radioButtonDae.Size = new System.Drawing.Size(90, 16);
+            this.radioButtonDae.TabIndex = 2;
+            this.radioButtonDae.Text = "DAE (color)";
+            this.radioButtonDae.UseVisualStyleBackColor = true;
+            this.radioButtonDae.CheckedChanged += new System.EventHandler(this.DaeFormatChanged);
             // 
             // radioButtonFine
             // 
@@ -1935,5 +1946,6 @@
         private System.Windows.Forms.RadioButton radioButtonUrdf;
         private System.Windows.Forms.RadioButton radioButtonXacro;
         private System.Windows.Forms.RadioButton radioButtonStl;
+        private System.Windows.Forms.RadioButton radioButtonDae;
     }
 }

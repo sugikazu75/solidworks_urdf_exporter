@@ -326,6 +326,10 @@ namespace SW2URDF.UI
                 {
                     meshFormat = MeshExportFormat.STL;
                 }
+                else if (radioButtonDae.Checked)
+                {
+                    meshFormat = MeshExportFormat.DAE;
+                }
                 else if(radioButton3dxml.Checked)
                 {
                     meshFormat = MeshExportFormat.THREEDXML;
@@ -345,6 +349,21 @@ namespace SW2URDF.UI
             string format = radioButtonXacro.Checked ? "Xacro" : "URDF";
             buttonLinksExportUrdfOnly.Text = "Export " + format + " Only...";
             buttonLinksFinish.Text = "Export " + format + " and Meshes...";
+        }
+
+        private void DaeFormatChanged(object sender, EventArgs e)
+        {
+            bool dae = radioButtonDae.Checked;
+            radioButtonCourse.Enabled = !dae;
+            radioButtonFine.Enabled = !dae;
+            label10.Text = dae ? "Model image quality" : "Mesh Detail";
+            comboBoxMaterials.Enabled = !dae;
+            domainUpDownRed.Enabled = !dae;
+            domainUpDownGreen.Enabled = !dae;
+            domainUpDownBlue.Enabled = !dae;
+            domainUpDownAlpha.Enabled = !dae;
+            textBoxTexture.Enabled = !dae;
+            buttonTextureBrowse.Enabled = !dae;
         }
 
         private string CheckLinksForErrors(Link baseLink)
