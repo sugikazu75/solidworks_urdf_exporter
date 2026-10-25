@@ -77,6 +77,8 @@
             this.radioButtonDae = new System.Windows.Forms.RadioButton();
             this.radioButtonFine = new System.Windows.Forms.RadioButton();
             this.radioButtonCourse = new System.Windows.Forms.RadioButton();
+            this.radioButtonFaceLimit = new System.Windows.Forms.RadioButton();
+            this.numericMaximumFaces = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.textBoxVisualOriginZ = new System.Windows.Forms.TextBox();
@@ -560,6 +562,8 @@
             this.groupBox4.Controls.Add(this.groupBoxRobotFormat);
             this.groupBox4.Controls.Add(this.radioButtonFine);
             this.groupBox4.Controls.Add(this.radioButtonCourse);
+            this.groupBox4.Controls.Add(this.radioButtonFaceLimit);
+            this.groupBox4.Controls.Add(this.numericMaximumFaces);
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Controls.Add(this.label19);
             this.groupBox4.Controls.Add(this.textBoxVisualOriginZ);
@@ -665,6 +669,7 @@
             this.radioButtonStl.TabStop = true;
             this.radioButtonStl.Text = "STL (grayscale)";
             this.radioButtonStl.UseVisualStyleBackColor = true;
+            this.radioButtonStl.CheckedChanged += new System.EventHandler(this.MeshDetailChanged);
             // radioButtonDae
             this.radioButtonDae.AutoSize = true;
             this.radioButtonDae.Location = new System.Drawing.Point(11, 54);
@@ -694,8 +699,22 @@
             this.radioButtonCourse.Size = new System.Drawing.Size(59, 16);
             this.radioButtonCourse.TabIndex = 67;
             this.radioButtonCourse.TabStop = true;
-            this.radioButtonCourse.Text = "Course";
+            this.radioButtonCourse.Text = "Coarse";
             this.radioButtonCourse.UseVisualStyleBackColor = true;
+            this.radioButtonFaceLimit.AutoSize = true;
+            this.radioButtonFaceLimit.Location = new System.Drawing.Point(16, 193);
+            this.radioButtonFaceLimit.Name = "radioButtonFaceLimit";
+            this.radioButtonFaceLimit.Text = "Max faces";
+            this.radioButtonFaceLimit.TabIndex = 69;
+            this.radioButtonFaceLimit.CheckedChanged += new System.EventHandler(this.MeshDetailChanged);
+            this.numericMaximumFaces.Location = new System.Drawing.Point(94, 190);
+            this.numericMaximumFaces.Name = "numericMaximumFaces";
+            this.numericMaximumFaces.Size = new System.Drawing.Size(80, 20);
+            this.numericMaximumFaces.Minimum = 4;
+            this.numericMaximumFaces.Maximum = 199999;
+            this.numericMaximumFaces.Value = 199999;
+            this.numericMaximumFaces.Enabled = false;
+            this.numericMaximumFaces.TabIndex = 70;
             // 
             // label10
             // 
@@ -759,7 +778,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(7, 201);
+            this.label28.Location = new System.Drawing.Point(7, 215);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(77, 12);
             this.label28.TabIndex = 47;
@@ -775,7 +794,7 @@
             // comboBoxMaterials
             // 
             this.comboBoxMaterials.FormattingEnabled = true;
-            this.comboBoxMaterials.Location = new System.Drawing.Point(16, 225);
+            this.comboBoxMaterials.Location = new System.Drawing.Point(16, 231);
             this.comboBoxMaterials.Name = "comboBoxMaterials";
             this.comboBoxMaterials.Size = new System.Drawing.Size(121, 20);
             this.comboBoxMaterials.TabIndex = 48;
@@ -1827,6 +1846,8 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RadioButton radioButtonFine;
         private System.Windows.Forms.RadioButton radioButtonCourse;
+        private System.Windows.Forms.RadioButton radioButtonFaceLimit;
+        private System.Windows.Forms.NumericUpDown numericMaximumFaces;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox textBoxVisualOriginZ;

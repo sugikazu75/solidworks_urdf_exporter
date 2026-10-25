@@ -204,6 +204,7 @@ namespace SW2URDF.URDFExport
             ActiveSWModel.HideComponent2();
 
             bool success = false;
+            string failureReason = null;
             try
             {
                 logger.Info("Beginning individual files export");
@@ -212,6 +213,7 @@ namespace SW2URDF.URDFExport
             }
             catch (Exception e)
             {
+                failureReason = e.Message;
                 logger.Error("An exception was thrown attempting to export the URDF", e);
             }
             finally
@@ -225,8 +227,8 @@ namespace SW2URDF.URDFExport
 
             if (!success)
             {
-                MessageBox.Show("Exporting the URDF failed unexpectedly. Email your maintainer " +
-                    "with the log file found at " + Logger.GetFileName());
+                MessageBox.Show("Exporting the URDF failed: " + failureReason +
+                    "\n\nSee the log file for details: " + Logger.GetFileName());
                 return;
             }
 
@@ -462,10 +464,10 @@ namespace SW2URDF.URDFExport
 
             int saveOptions = (int)swSaveAsOptions_e.swSaveAsOptions_Silent |
                 (int)swSaveAsOptions_e.swSaveAsOptions_Copy;
-            SetLinkSpecificSTLPreferences(names["geo"], link.STLQualityFine, ActiveDoc);
+            SetLinkSpecificSTLPreferences(names["geo"], link.STLQualityFine || link.STLUseFaceLimit, ActiveDoc);
 
             logger.Info("Saving STL to " + windowsMeshFilename);
-            ActiveDoc.Extension.SaveAs(windowsMeshFilename,
+            bool saved = ActiveDoc.Extension.SaveAs(windowsMeshFilename,
                 (int)swSaveAsVersion_e.swSaveAsCurrentVersion, saveOptions, null, ref errors, ref warnings);
             if (errors + warnings != 0)
             {
@@ -474,12 +476,16 @@ namespace SW2URDF.URDFExport
             }
             CommonSwOperations.HideComponents(ActiveSWModel, link.SWComponents);
 
+            if (!saved || errors != 0)
+                throw new IOException("SolidWorks could not export STL for " + link.Name + ". Error: " + errors);
             bool success = CorrectSTLMesh(windowsMeshFilename);
             if (!success)
             {
                 logger.Warn("There was an issue exporting the STL for " + link.Name + ". It " +
                     "may not be readable by CAD programs that aren't SolidWorks");
             }
+            if (link.STLUseFaceLimit)
+                StlSimplifier.LimitFaces(windowsMeshFilename, link.STLMaximumFaces);
             return success;
         }
 

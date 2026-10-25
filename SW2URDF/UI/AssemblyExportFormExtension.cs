@@ -77,8 +77,11 @@ namespace SW2URDF.UI
                                                      domainUpDownAlpha,
                                                      "G5");
 
-                radioButtonFine.Checked = Link.STLQualityFine;
-                radioButtonCourse.Checked = !Link.STLQualityFine;
+                radioButtonFine.Checked = !Link.STLUseFaceLimit && Link.STLQualityFine;
+                radioButtonCourse.Checked = !Link.STLUseFaceLimit && !Link.STLQualityFine;
+                radioButtonFaceLimit.Checked = Link.STLUseFaceLimit;
+                numericMaximumFaces.Value = Math.Max(4, Math.Min(199999,
+                    Link.STLMaximumFaces > 0 ? Link.STLMaximumFaces : 199999));
             }
         }
 
@@ -270,7 +273,9 @@ namespace SW2URDF.UI
                                                   domainUpDownBlue,
                                                   domainUpDownAlpha);
 
-                Link.STLQualityFine = radioButtonFine.Checked;
+                Link.STLQualityFine = radioButtonFine.Checked || radioButtonFaceLimit.Checked;
+                Link.STLUseFaceLimit = radioButtonFaceLimit.Checked;
+                Link.STLMaximumFaces = (int)numericMaximumFaces.Value;
             }
         }
 

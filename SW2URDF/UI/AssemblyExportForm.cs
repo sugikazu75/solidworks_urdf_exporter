@@ -353,6 +353,7 @@ namespace SW2URDF.UI
 
         private void DaeFormatChanged(object sender, EventArgs e)
         {
+            MeshDetailChanged(sender, e);
             bool dae = radioButtonDae.Checked;
             radioButtonCourse.Enabled = !dae;
             radioButtonFine.Enabled = !dae;
@@ -364,6 +365,12 @@ namespace SW2URDF.UI
             domainUpDownAlpha.Enabled = !dae;
             textBoxTexture.Enabled = !dae;
             buttonTextureBrowse.Enabled = !dae;
+        }
+
+        private void MeshDetailChanged(object sender, EventArgs e)
+        {
+            radioButtonFaceLimit.Enabled = radioButtonStl.Checked;
+            numericMaximumFaces.Enabled = radioButtonStl.Checked && radioButtonFaceLimit.Checked;
         }
 
         private string CheckLinksForErrors(Link baseLink)

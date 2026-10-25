@@ -332,6 +332,7 @@
     <Compile Include="Test\TestExportHelper.cs" />
     <Compile Include="Test\TestCollada.cs" />
     <Compile Include="URDFExport\ColladaMesh.cs" />
+    <Compile Include="URDFExport\StlSimplifier.cs" />
     <Content Include="ThirdParty\geometry3Sharp-LICENSE.txt">
       <Link>geometry3Sharp-LICENSE.txt</Link>
       <TargetPath>geometry3Sharp-LICENSE.txt</TargetPath>

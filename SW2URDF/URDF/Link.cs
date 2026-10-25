@@ -42,6 +42,12 @@ namespace SW2URDF.URDF
         public bool STLQualityFine;
 
         [DataMember]
+        public bool STLUseFaceLimit;
+
+        [DataMember]
+        public int STLMaximumFaces = 199999;
+
+        [DataMember]
         public bool isIncomplete;
 
         [DataMember]

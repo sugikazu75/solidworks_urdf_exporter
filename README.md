@@ -73,6 +73,28 @@ Components must be resolved and have tessellation available; export fails with
 an error instead of silently generating an empty mesh when triangles are missing.
 This option applies to assembly export; the separate part exporter is unchanged.
 
+### STL face limit
+
+In the assembly export screen, select **STL**, then **Max faces** under Mesh Detail.
+The numeric field defaults to **199999** and accepts values from 4 to 199999.
+These settings belong to the selected link and are saved with the exporter configuration.
+Older configurations retain the previous Coarse/Fine behavior. To limit every STL,
+select Max faces for every physical link before export.
+
+This mode starts from a fine STL and simplifies it only if it exceeds the specified
+number of triangular faces (not vertices). It uses geometry3Sharp's quadric-error
+edge-collapse simplifier, the same family of algorithms as MeshLab's Quadric Edge
+Collapse Decimation. Small details can change; coordinates, units, and CAD-derived
+mass/inertia are retained. Degenerate faces are cleaned and the final binary STL
+face count is checked before replacing the full-resolution output. If valid
+connectivity cannot be reconstructed or the limit cannot be reached, export fails
+and the full-resolution STL is retained for diagnosis. Coarse/Fine, DAE, 3dxml,
+export-without-meshes, and the separate part exporter do not apply this limit.
+
+Restore NuGet packages when building: the signed `geometry3Sharp-signed` 1.0.323
+dependency is copied alongside the add-in DLL and included by the existing installer.
+No MeshLab installation or .NET Framework upgrade is required.
+
 ## Development
 
 1. Install Visual Studio 2017
