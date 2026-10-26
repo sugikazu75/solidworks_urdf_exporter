@@ -24,19 +24,6 @@ https://github.com/ros/solidworks_urdf_exporter/releases/tag/1.5.1
 
 See the [ROS Wiki](http://wiki.ros.org/sw_urdf_exporter) and associated [tutorials](http://wiki.ros.org/sw_urdf_exporter/Tutorials).
 
-### Overridden mass properties
-
-With SolidWorks 2020 or later, assembly links use component-level mass properties,
-including values assigned through **Override Mass Properties**, in SI units.
-This also preserves component placement when a link contains a subassembly.
-Older SolidWorks versions, or documents for which `CreateMassProperty2` is
-unavailable, use the previous body-based calculation and log a warning. That
-fallback does not support overridden mass properties and retains the previous
-subassembly limitations. The separate part exporter is unchanged.
-
-Building this version requires the .NET Framework 4.5.2 targeting pack and
-SolidWorks 2020 or newer interop assemblies.
-
 ## Development
 
 1. Install Visual Studio 2017
