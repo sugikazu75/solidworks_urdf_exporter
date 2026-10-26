@@ -24,15 +24,6 @@ https://github.com/ros/solidworks_urdf_exporter/releases/tag/1.5.1
 
 See the [ROS Wiki](http://wiki.ros.org/sw_urdf_exporter) and associated [tutorials](http://wiki.ros.org/sw_urdf_exporter/Tutorials).
 
-### Reference-only links
-
-In the assembly exporter, leave **Link Components** empty to export a reference
-frame without inertial, visual, collision, or mesh data. For a non-base link,
-select an existing reference coordinate system for its origin; it is connected
-to its parent by a fixed joint, so no reference axis is needed. Empty links may
-have children. An empty base link may also use the automatically generated global
-coordinate system.
-
 ## Development
 
 1. Install Visual Studio 2017
